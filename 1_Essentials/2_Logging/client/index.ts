@@ -1,13 +1,18 @@
 import * as signalR from "@microsoft/signalr";
-import { CustomLogger } from "./customLogger";
+import {HttpTransportType} from "@microsoft/signalr";
+// import {LogLevel} from "@microsoft/signalr";
+import {CustomLogger} from "./customLogger";
 
 var counter = document.getElementById("viewCounter");
+//WebSocket = undefined; 
 
 // create connection
 let connection = new signalR.HubConnectionBuilder()
-    //  .configureLogging(signalR.LogLevel.Trace)
+   //   .configureLogging(LogLevel.Trace)
     .configureLogging(new CustomLogger())
-    .withUrl("/hub/view")
+    .withUrl("/hub/view", {
+        transport: HttpTransportType.WebSockets | HttpTransportType.ServerSentEvents
+    })
     .build();
 
 // on view update message from client
